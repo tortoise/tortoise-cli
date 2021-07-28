@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "tortoise-cli"
+version = "0.1.0"
+description = "A cli tool for tortoise-orm, build on top of click and ptpython."
+authors = ["long2ice <long2ice@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/tortoise/tortoise-cli"
+repository = "https://github.com/tortoise/tortoise-cli.git"
+documentation = "https://github.com/tortoise/tortoise-cli"
+keywords = ["tortoise", "shell", "cli", "tortoise-orm"]
+packages = [
+    { include = "tortoise_cli"}
+]
+include = ["CHANGELOG.md", "LICENSE", "README.md"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+tortoise-orm = "*"
+click = "*"
+ptpython = "*"
+
+[tool.poetry.dev-dependencies]
+# test
+pytest = "*"
+pytest-xdist = "*"
+pytest-sugar = "*"
+# lint
+black = "*"
+flake8 = "*"
+isort = "*"
+mypy = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+tortoise-cli = "tortoise_cli.cli:main"
