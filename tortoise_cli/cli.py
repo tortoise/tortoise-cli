@@ -1,5 +1,7 @@
 import asyncio
+import os
 from functools import wraps
+from typing import Optional
 
 import click
 from ptpython.repl import embed
@@ -27,11 +29,14 @@ def coro(f):
     "-c",
     "--config",
     help="TortoiseORM config dictionary path, like settings.TORTOISE_ORM",
-    required=True,
 )
 @click.pass_context
 @coro
-async def cli(ctx: click.Context, config: str):
+async def cli(ctx: click.Context, config: Optional[str]):
+    if not config:
+        config = os.getenv("TORTOISE_ORM")
+    if not config:
+        raise click.UsageError("You must specify TORTOISE_ORM in option or env", ctx=ctx)
     tortoise_config = utils.get_tortoise_config(ctx, config)
     await Tortoise.init(config=tortoise_config)
     await Tortoise.generate_schemas(safe=True)

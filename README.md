@@ -50,7 +50,19 @@ TORTOISE_ORM = {
 Then you can start an interactive shell for TortoiseORM.
 
 ```shell
-tortoise-cli -c examples.TORTOISE_ORM shell
+tortoise-cli -c settings.TORTOISE_ORM shell
+```
+
+Or you can set config by set environment variable.
+
+```shell
+export TORTOISE_ORM=settings.TORTOISE_ORM
+```
+
+Then just run:
+
+```shell
+tortoise-cli shell
 ```
 
 ## License
