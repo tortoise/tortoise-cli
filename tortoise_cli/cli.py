@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 from functools import wraps
 from typing import Optional
 
@@ -59,6 +60,7 @@ async def shell(ctx: click.Context):
 
 
 def main():
+    sys.path.insert(0, ".")
     cli()
 
 
