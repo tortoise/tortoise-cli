@@ -47,6 +47,8 @@ TORTOISE_ORM = {
 
 ## Interactive shell
 
+![image](https://raw.githubusercontent.com/tortoise/tortoise-cli/main/images/shell.png)
+
 Then you can start an interactive shell for TortoiseORM.
 
 ```shell
