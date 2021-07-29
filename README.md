@@ -23,7 +23,7 @@ Usage: tortoise-cli [OPTIONS] COMMAND [ARGS]...
 Options:
   -V, --version      Show the version and exit.
   -c, --config TEXT  TortoiseORM config dictionary path, like
-                     settings.TORTOISE_ORM  [required]
+                     settings.TORTOISE_ORM
   -h, --help         Show this message and exit.
 
 Commands:
@@ -37,7 +37,7 @@ First, you need make a TortoiseORM config object, assuming that in `settings.py`
 ```python
 TORTOISE_ORM = {
     "connections": {
-        "default": 'sqlite://:memory:',
+        "default": "sqlite://:memory:",
     },
     "apps": {
         "models": {"models": ["examples.models"], "default_connection": "default"},
