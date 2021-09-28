@@ -2,9 +2,11 @@ import asyncio
 import os
 import sys
 from functools import wraps
+from pathlib import Path
 from typing import Optional
 
 import click
+import tomlkit
 from ptpython.repl import embed
 from tortoise import Tortoise
 
@@ -37,7 +39,17 @@ async def cli(ctx: click.Context, config: Optional[str]):
     if not config:
         config = os.getenv("TORTOISE_ORM")
     if not config:
-        raise click.UsageError("You must specify TORTOISE_ORM in option or env", ctx=ctx)
+        file = "pyproject.toml"
+        if Path(file).exists():
+            with open(file, "r") as f:
+                content = f.read()
+            doc = tomlkit.parse(content)
+            config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm")  # type:ignore
+    if not config:
+        raise click.UsageError(
+            "You must specify TORTOISE_ORM in option or env, or config file pyproject.toml from config of aerich",
+            ctx=ctx,
+        )
     tortoise_config = utils.get_tortoise_config(ctx, config)
     await Tortoise.init(config=tortoise_config)
     await Tortoise.generate_schemas(safe=True)

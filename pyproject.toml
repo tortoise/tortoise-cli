@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tortoise-cli"
-version = "0.1.1"
+version = "0.1.2"
 description = "A cli tool for tortoise-orm, build on top of click and ptpython."
 authors = ["long2ice <long2ice@gmail.com>"]
 license = "Apache-2.0"
@@ -19,6 +19,7 @@ python = "^3.7"
 tortoise-orm = "*"
 click = "*"
 ptpython = "*"
+tomlkit = "*"
 
 [tool.poetry.dev-dependencies]
 # test
@@ -37,3 +38,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 tortoise-cli = "tortoise_cli.cli:main"
+
+[tool.aerich]
+tortoise_orm = "examples.TORTOISE_ORM"
