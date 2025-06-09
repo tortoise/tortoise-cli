@@ -1,6 +1,6 @@
 import importlib
 
-from click import BadOptionUsage, ClickException, Context
+from asyncclick import BadOptionUsage, ClickException, Context
 
 
 def get_tortoise_config(ctx: Context, config: str) -> dict:

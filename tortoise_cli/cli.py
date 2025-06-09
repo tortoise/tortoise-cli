@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-import asyncio
+import contextlib
 import os
 import sys
-from functools import wraps
 from pathlib import Path
+from collections.abc import AsyncGenerator
 
-import click
+import asyncclick as click
 from ptpython.repl import embed
-from tortoise import Tortoise
+from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
 
@@ -18,17 +18,13 @@ else:
     import tomlkit as tomllib
 
 
-def coro(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        loop = asyncio.get_event_loop()
-        try:
-            loop.run_until_complete(f(*args, **kwargs))
-        finally:
-            if f.__name__ != "cli":
-                loop.run_until_complete(Tortoise.close_connections())
-
-    return wrapper
+@contextlib.asynccontextmanager
+async def aclose_tortoise() -> AsyncGenerator[None]:
+    try:
+        yield
+    finally:
+        if Tortoise._inited:
+            await connections.close_all()
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -39,7 +35,6 @@ def coro(f):
     help="TortoiseORM config dictionary path, like settings.TORTOISE_ORM",
 )
 @click.pass_context
-@coro
 async def cli(ctx: click.Context, config: str | None):
     if (
         not config
@@ -60,18 +55,16 @@ async def cli(ctx: click.Context, config: str | None):
 
 @cli.command(help="Start a interactive shell.")
 @click.pass_context
-@coro
 async def shell(ctx: click.Context):
-    try:
-        await embed(
-            globals=globals(),
-            title="Tortoise Shell",
-            vi_mode=True,
-            return_asyncio_coroutine=True,
-            patch_stdout=True,
-        )
-    except (EOFError, ValueError):
-        pass
+    async with aclose_tortoise():
+        with contextlib.suppress(EOFError, ValueError):
+            await embed(
+                globals=globals(),
+                title="Tortoise Shell",
+                vi_mode=True,
+                return_asyncio_coroutine=True,
+                patch_stdout=True,
+            )
 
 
 def main():
