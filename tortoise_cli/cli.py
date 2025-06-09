@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import asyncio
 import os
 import sys
 from functools import wraps
 from pathlib import Path
-from typing import Optional
 
 import click
 import tomlkit
@@ -35,7 +36,7 @@ def coro(f):
 )
 @click.pass_context
 @coro
-async def cli(ctx: click.Context, config: Optional[str]):
+async def cli(ctx: click.Context, config: str | None):
     if (
         not config
         and not (config := os.getenv("TORTOISE_ORM"))

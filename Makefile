@@ -1,5 +1,4 @@
 checkfiles = tortoise_cli/ tests/ examples/ conftest.py
-black_opts = -l 100 -t py39
 py_warn = PYTHONDEVMODE=1
 
 up:
@@ -8,20 +7,22 @@ up:
 deps:
 	@poetry install --all-groups
 
-style: deps
-	isort -src $(checkfiles)
-	black $(black_opts) $(checkfiles)
+style: deps _style
+_style:
+	ruff format $(checkfiles)
+	ruff check --fix $(checkfiles)
 
-check: deps
-	black --check $(black_opts) $(checkfiles) || (echo "Please run 'make style' to auto-fix style issues" && false)
-	flake8 $(checkfiles)
+check: deps _check
+_check:
+	ruff format --check $(checkfiles) || (echo "Please run 'make style' to auto-fix style issues" && false)
+	ruff check $(checkfiles)
 	mypy $(checkfiles)
 
-
-test: deps
+test: deps _test
+_test:
 	$(py_warn) pytest
 
 build: deps
 	@poetry build
 
-ci: check test
+ci: check _test

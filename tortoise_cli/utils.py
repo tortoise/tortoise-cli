@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib
 
 from click import BadOptionUsage, ClickException, Context

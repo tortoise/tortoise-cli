@@ -26,15 +26,13 @@ packages = [
 ]
 
 [tool.poetry.group.test.dependencies]
-pytest = "*"
-pytest-xdist = "*"
-pytest-sugar = "*"
+pytest = "^8.4.0"
+pytest-xdist = "^3.7.0"
+pytest-sugar = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
-isort = "*"
-flake8 = "*"
-black = "*"
-mypy = "*"
+ruff = "^0.11.13"
+mypy = "^1.16.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0"]
@@ -50,3 +48,13 @@ tortoise_orm = "examples.TORTOISE_ORM"
 pretty = true
 check_untyped_defs = true
 ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+[tool.ruff.lint]
+ignore = ["E501"]
+extend-select = [
+    "FA",     # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
+    "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    "RUF100", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+]
