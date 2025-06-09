@@ -36,15 +36,13 @@ def coro(f):
 @click.pass_context
 @coro
 async def cli(ctx: click.Context, config: Optional[str]):
-    if not config:
-        config = os.getenv("TORTOISE_ORM")
-    if not config:
-        file = "pyproject.toml"
-        if Path(file).exists():
-            with open(file, "r") as f:
-                content = f.read()
-            doc = tomlkit.parse(content)
-            config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm")  # type:ignore
+    if (
+        not config
+        and not (config := os.getenv("TORTOISE_ORM"))
+        and (p := Path("pyproject.toml")).exists()
+    ):
+        doc = tomlkit.parse(p.read_text("utf-8"))
+        config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
     if not config:
         raise click.UsageError(
             "You must specify TORTOISE_ORM in option or env, or config file pyproject.toml from config of aerich",
@@ -72,7 +70,8 @@ async def shell(ctx: click.Context):
 
 
 def main():
-    sys.path.insert(0, ".")
+    if sys.path[0] != ".":
+        sys.path.insert(0, ".")
     cli()
 
 

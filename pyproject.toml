@@ -1,6 +1,6 @@
 [project]
 name = "tortoise-cli"
-version = "0.1.2"
+version = "0.2.0"
 description = "A cli tool for tortoise-orm, build on top of click and ptpython."
 authors = [{name="long2ice", email="long2ice@gmail.com"}]
 license = "Apache-2.0"
@@ -36,10 +36,6 @@ flake8 = "*"
 black = "*"
 mypy = "*"
 
-[tool.mypy]
-pretty = True
-ignore_missing_imports = True
-
 [build-system]
 requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -49,3 +45,8 @@ tortoise-cli = "tortoise_cli.cli:main"
 
 [tool.aerich]
 tortoise_orm = "examples.TORTOISE_ORM"
+
+[tool.mypy]
+pretty = true
+check_untyped_defs = true
+ignore_missing_imports = true
