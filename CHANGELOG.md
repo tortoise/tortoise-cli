@@ -4,7 +4,9 @@
 
 ### 0.2.0
 
-- Drop support for Python3.8
+- Drop support for Python3.8 ([#4])
+
+[#4]: https://github.com/tortoise/tortoise-cli/pull/4
 
 ## 0.1
 

@@ -7,11 +7,15 @@ from functools import wraps
 from pathlib import Path
 
 import click
-import tomlkit
 from ptpython.repl import embed
 from tortoise import Tortoise
 
 from tortoise_cli import __version__, utils
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomlkit as tomllib
 
 
 def coro(f):
@@ -42,7 +46,7 @@ async def cli(ctx: click.Context, config: str | None):
         and not (config := os.getenv("TORTOISE_ORM"))
         and (p := Path("pyproject.toml")).exists()
     ):
-        doc = tomlkit.parse(p.read_text("utf-8"))
+        doc = tomllib.loads(p.read_text("utf-8"))
         config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
     if not config:
         raise click.UsageError(

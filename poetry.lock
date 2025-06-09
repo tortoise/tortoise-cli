@@ -495,6 +495,7 @@ description = "Style preserving TOML library"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
+markers = "python_version < \"3.11\""
 files = [
     {file = "tomlkit-0.13.3-py3-none-any.whl", hash = "sha256:c89c649d79ee40629a9fda55f8ace8c6a1b42deb912b2a8fd8d942ddadb606b0"},
     {file = "tomlkit-0.13.3.tar.gz", hash = "sha256:430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1"},
@@ -554,4 +555,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9"
-content-hash = "23b1b4a9c8a5d0f97fc63482d338b5dfbea8f071de9219e5532a2f9e8b43377e"
+content-hash = "0be79ec301f9bca5122a63ee126ec07b58dcc946981a7e6ac5cea5339fe74760"

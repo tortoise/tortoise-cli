@@ -12,7 +12,7 @@ dependencies = [
     "tortoise-orm",
     "click",
     "ptpython",
-    "tomlkit",
+    "tomlkit (>=0.11.4,<1.0.0); python_version < '3.11'",
 ]
 
 [project.urls]
