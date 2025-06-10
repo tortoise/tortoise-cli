@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-import os
 import sys
-from pathlib import Path
 from collections.abc import AsyncGenerator
 
 import asyncclick as click
@@ -11,11 +9,6 @@ from ptpython.repl import embed
 from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
-
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomlkit as tomllib
 
 
 @contextlib.asynccontextmanager
@@ -36,14 +29,7 @@ async def aclose_tortoise() -> AsyncGenerator[None]:
 )
 @click.pass_context
 async def cli(ctx: click.Context, config: str | None):
-    if (
-        not config
-        and not (config := os.getenv("TORTOISE_ORM"))
-        and (p := Path("pyproject.toml")).exists()
-    ):
-        doc = tomllib.loads(p.read_text("utf-8"))
-        config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
-    if not config:
+    if not config and not (config := utils.tortoise_orm_config()):
         raise click.UsageError(
             "You must specify TORTOISE_ORM in option or env, or config file pyproject.toml from config of aerich",
             ctx=ctx,

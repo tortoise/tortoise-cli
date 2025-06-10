@@ -1,6 +1,27 @@
 import importlib
+import os
+import sys
+from pathlib import Path
 
 from asyncclick import BadOptionUsage, ClickException, Context
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomlkit as tomllib
+
+
+def tortoise_orm_config(file="pyproject.toml") -> str:
+    """
+    get tortoise orm config from os environment variable or aerich item in pyproject.toml
+
+    :param file: toml file that aerich item loads from it
+    :return: module path and var name that store the tortoise config, e.g.: 'settings.TORTOISE_ORM'
+    """
+    if not (config := os.getenv("TORTOISE_ORM", "")) and (p := Path(file)).exists():
+        doc = tomllib.loads(p.read_text("utf-8"))
+        config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
+    return config
 
 
 def get_tortoise_config(ctx: Context, config: str) -> dict:
