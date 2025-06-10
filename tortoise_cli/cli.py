@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import os
 import sys
 from functools import wraps
@@ -62,7 +63,7 @@ async def cli(ctx: click.Context, config: str | None):
 @click.pass_context
 @coro
 async def shell(ctx: click.Context):
-    try:
+    with contextlib.suppress(EOFError, ValueError):
         await embed(
             globals=globals(),
             title="Tortoise Shell",
@@ -70,8 +71,6 @@ async def shell(ctx: click.Context):
             return_asyncio_coroutine=True,
             patch_stdout=True,
         )
-    except (EOFError, ValueError):
-        pass
 
 
 def main():
