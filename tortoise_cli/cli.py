@@ -10,6 +10,11 @@ from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
 
+if sys.version_info >= (3, 11):
+    pass
+else:
+    pass
+
 
 @contextlib.asynccontextmanager
 async def aclose_tortoise() -> AsyncGenerator[None]:
@@ -28,7 +33,7 @@ async def aclose_tortoise() -> AsyncGenerator[None]:
     help="TortoiseORM config dictionary path, like settings.TORTOISE_ORM",
 )
 @click.pass_context
-async def cli(ctx: click.Context, config: str | None):
+async def cli(ctx: click.Context, config: str | None) -> None:
     if not config and not (config := utils.tortoise_orm_config()):
         raise click.UsageError(
             "You must specify TORTOISE_ORM in option or env, or config file pyproject.toml from config of aerich",
@@ -41,7 +46,7 @@ async def cli(ctx: click.Context, config: str | None):
 
 @cli.command(help="Start a interactive shell.")
 @click.pass_context
-async def shell(ctx: click.Context):
+async def shell(ctx: click.Context) -> None:
     async with aclose_tortoise():
         with contextlib.suppress(EOFError, ValueError):
             await embed(
@@ -53,7 +58,7 @@ async def shell(ctx: click.Context):
             )
 
 
-def main():
+def main() -> None:
     if sys.path[0] != ".":
         sys.path.insert(0, ".")
     cli()
