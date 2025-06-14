@@ -1,16 +1,22 @@
+from __future__ import annotations
+
 import asyncio
+import contextlib
 import os
 import sys
 from functools import wraps
 from pathlib import Path
-from typing import Optional
 
 import click
-import tomlkit
 from ptpython.repl import embed
 from tortoise import Tortoise
 
 from tortoise_cli import __version__, utils
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomlkit as tomllib
 
 
 def coro(f):
@@ -35,13 +41,13 @@ def coro(f):
 )
 @click.pass_context
 @coro
-async def cli(ctx: click.Context, config: Optional[str]):
+async def cli(ctx: click.Context, config: str | None):
     if (
         not config
         and not (config := os.getenv("TORTOISE_ORM"))
         and (p := Path("pyproject.toml")).exists()
     ):
-        doc = tomlkit.parse(p.read_text("utf-8"))
+        doc = tomllib.loads(p.read_text("utf-8"))
         config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
     if not config:
         raise click.UsageError(
@@ -57,7 +63,7 @@ async def cli(ctx: click.Context, config: Optional[str]):
 @click.pass_context
 @coro
 async def shell(ctx: click.Context):
-    try:
+    with contextlib.suppress(EOFError, ValueError):
         await embed(
             globals=globals(),
             title="Tortoise Shell",
@@ -65,8 +71,6 @@ async def shell(ctx: click.Context):
             return_asyncio_coroutine=True,
             patch_stdout=True,
         )
-    except (EOFError, ValueError):
-        pass
 
 
 def main():
