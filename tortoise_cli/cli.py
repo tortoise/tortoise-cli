@@ -10,11 +10,6 @@ from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
 
-if sys.version_info >= (3, 11):
-    pass
-else:
-    pass
-
 
 @contextlib.asynccontextmanager
 async def aclose_tortoise() -> AsyncGenerator[None]:
