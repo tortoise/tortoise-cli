@@ -1,12 +1,12 @@
 checkfiles = tortoise_cli/ tests/ examples/ conftest.py
-black_opts = -l 100 -t py38
+black_opts = -l 100 -t py39
 py_warn = PYTHONDEVMODE=1
 
 up:
 	@poetry update
 
 deps:
-	@poetry install
+	@poetry install --all-groups
 
 style: deps
 	isort -src $(checkfiles)
@@ -19,7 +19,7 @@ check: deps
 
 
 test: deps
-	$(py_warn) py.test
+	$(py_warn) pytest
 
 build: deps
 	@poetry build

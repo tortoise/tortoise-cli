@@ -60,6 +60,12 @@ Or you can set config by set environment variable.
 ```shell
 export TORTOISE_ORM=settings.TORTOISE_ORM
 ```
+Or you can set it in `pyproject.toml`.
+
+```toml
+[tool.aerich]
+tortoise_orm = "my_module.TORTOISE_ORM"
+```
 
 Then just run:
 
