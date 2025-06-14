@@ -51,7 +51,7 @@ async def cli(ctx: click.Context, config: str | None, generate_schemas: bool | N
 
 @cli.command(help="Start a interactive shell.")
 @click.pass_context
-async def shell(ctx: click.Context):
+async def shell(ctx: click.Context) -> None:
     async with aclose_tortoise():
         with contextlib.suppress(EOFError, ValueError):
             await embed(
@@ -63,7 +63,7 @@ async def shell(ctx: click.Context):
             )
 
 
-def main():
+def main() -> None:
     if sys.path[0] != ".":
         sys.path.insert(0, ".")
     cli()
