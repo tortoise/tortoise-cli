@@ -44,7 +44,7 @@ async def cli(ctx: click.Context, config: str | None, generate_schemas: bool | N
     if generate_schemas is None:
         cons = tortoise_config["connections"]
         # Auto generate schemas when flag not explicitly passed and dialect is sqlite
-        generate_schemas = "sqlite" in cons.get("default", str(cons))
+        generate_schemas = "sqlite" in str(cons.get("default", cons))
     if generate_schemas:
         await Tortoise.generate_schemas(safe=True)
 
