@@ -27,8 +27,13 @@ async def aclose_tortoise() -> AsyncGenerator[None]:
     "--config",
     help="TortoiseORM config dictionary path, like settings.TORTOISE_ORM",
 )
+@click.option(
+    "--generate-schemas/--no-generate-schemas",
+    default=None,
+    help="Whether generate schemas after TortoiseORM inited",
+)
 @click.pass_context
-async def cli(ctx: click.Context, config: str | None) -> None:
+async def cli(ctx: click.Context, config: str | None, generate_schemas: bool | None = None):
     if not config and not (config := utils.tortoise_orm_config()):
         raise click.UsageError(
             "You must specify TORTOISE_ORM in option or env, or config file pyproject.toml from config of aerich",
@@ -36,7 +41,12 @@ async def cli(ctx: click.Context, config: str | None) -> None:
         )
     tortoise_config = utils.get_tortoise_config(ctx, config)
     await Tortoise.init(config=tortoise_config)
-    await Tortoise.generate_schemas(safe=True)
+    if generate_schemas is None:
+        cons = tortoise_config["connections"]
+        # Auto generate schemas when flag not explicitly passed and dialect is sqlite
+        generate_schemas = "sqlite" in str(cons.get("default", cons))
+    if generate_schemas:
+        await Tortoise.generate_schemas(safe=True)
 
 
 @cli.command(help="Start a interactive shell.")
