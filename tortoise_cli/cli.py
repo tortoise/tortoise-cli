@@ -41,13 +41,21 @@ def coro(f):
 )
 @click.pass_context
 @coro
+<<<<<<< HEAD
 async def cli(ctx: click.Context, config: str | None):
+=======
+async def cli(ctx: click.Context, config: Optional[str]):
+>>>>>>> 8a52d082dd7602ab3ebf4df523ec4685421dad0d
     if (
         not config
         and not (config := os.getenv("TORTOISE_ORM"))
         and (p := Path("pyproject.toml")).exists()
     ):
+<<<<<<< HEAD
         doc = tomllib.loads(p.read_text("utf-8"))
+=======
+        doc = tomlkit.parse(p.read_text("utf-8"))
+>>>>>>> 8a52d082dd7602ab3ebf4df523ec4685421dad0d
         config = doc.get("tool", {}).get("aerich", {}).get("tortoise_orm", "")
     if not config:
         raise click.UsageError(
