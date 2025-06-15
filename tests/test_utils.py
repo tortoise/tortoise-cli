@@ -3,10 +3,12 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from asyncclick.exceptions import ClickException
+from asyncclick import BadOptionUsage, ClickException, Command, Context
 
 import examples
 from tortoise_cli.utils import get_tortoise_config, tortoise_orm_config
+
+EMPTY_TORTOISE_ORM = None
 
 
 def test_tortoise_orm_config():
@@ -18,9 +20,12 @@ def test_tortoise_orm_config():
 
 
 def test_get_tortoise_config():
-    assert get_tortoise_config(None, tortoise_orm_config()) == examples.TORTOISE_ORM  # type:ignore[arg-type]
+    ctx = Context(Command("shell"))
+    assert get_tortoise_config(ctx, tortoise_orm_config()) == examples.TORTOISE_ORM
     with pytest.raises(
         ClickException,
         match="Error while importing configuration module: No module named 'settings'",
     ):
-        assert get_tortoise_config(None, "settings.TORTOISE_ORM")  # type:ignore[arg-type]
+        assert get_tortoise_config(ctx, "settings.TORTOISE_ORM")
+    with pytest.raises(BadOptionUsage):
+        assert get_tortoise_config(ctx, "tests.test_utils.EMPTY_TORTOISE_ORM")
