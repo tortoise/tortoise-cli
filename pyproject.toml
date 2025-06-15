@@ -47,7 +47,7 @@ tortoise_orm = "examples.TORTOISE_ORM"
 [tool.mypy]
 pretty = true
 check_untyped_defs = true
-ignore_missing_imports = true
+warn_unused_ignores = true
 
 [tool.ruff]
 line-length = 100
@@ -59,4 +59,13 @@ extend-select = [
     "FA",     # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
     "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
     "RUF100", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "@overload",
+    'if __name == "__main__":',
 ]
