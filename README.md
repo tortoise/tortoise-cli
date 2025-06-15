@@ -2,7 +2,7 @@
 
 [![image](https://img.shields.io/pypi/v/tortoise-cli.svg?style=flat)](https://pypi.python.org/pypi/tortoise-cli)
 [![image](https://img.shields.io/github/license/tortoise/tortoise-cli)](https://github.com/tortoise/tortoise-cli)
-[![image](https://github.com/tortoise/tortoise-cli/workflows/pypi/badge.svg)](https://github.com/tortoise/tortoise-cli/actions?query=workflow:pypi)
+[![image](https://github.com/tortoise/tortoise-cli/workflows/ci/badge.svg)](https://github.com/tortoise/tortoise-cli/actions?query=workflow:ci)
 
 A cli tool for tortoise-orm, build on top of asyncclick and ptpython.
 
