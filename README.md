@@ -4,7 +4,7 @@
 [![image](https://img.shields.io/github/license/tortoise/tortoise-cli)](https://github.com/tortoise/tortoise-cli)
 [![image](https://github.com/tortoise/tortoise-cli/workflows/pypi/badge.svg)](https://github.com/tortoise/tortoise-cli/actions?query=workflow:pypi)
 
-A cli tool for tortoise-orm, build on top of click and ptpython.
+A cli tool for tortoise-orm, build on top of asyncclick and ptpython.
 
 ## Installation
 
@@ -24,6 +24,9 @@ Options:
   -V, --version      Show the version and exit.
   -c, --config TEXT  TortoiseORM config dictionary path, like
                      settings.TORTOISE_ORM
+  --generate-schemas / --no-generate-schemas
+                     Whether generate schemas after TortoiseORM
+                     inited
   -h, --help         Show this message and exit.
 
 Commands:
