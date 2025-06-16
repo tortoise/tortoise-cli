@@ -29,4 +29,4 @@ _test:
 build: deps
 	@poetry build --clean
 
-ci: check _test
+ci: build _check _test
