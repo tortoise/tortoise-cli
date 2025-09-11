@@ -22,4 +22,4 @@ jobs:
         with:
           enable-cache: true
       - name: Run CI
-        run: make ci
+        run: uv run make ci
