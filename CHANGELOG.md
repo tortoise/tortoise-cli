@@ -4,6 +4,7 @@
 
 ### 0.2.0
 
+- feat: migrate from poetry to uv
 - ci: activate ci workflow and add test for utils (#8)
 - feat: generate schemas optionally ([#7])
 - Use `asyncclick` instead of `click` ([#6])
