@@ -14,7 +14,7 @@ _style:
 	ruff format $(checkfiles)
 	ruff check --fix $(checkfiles)
 
-check: deps _check
+check: build _check
 _check:
 	ruff format --check $(checkfiles) || (echo "Please run 'make style' to auto-fix style issues" && false)
 	ruff check $(checkfiles)
