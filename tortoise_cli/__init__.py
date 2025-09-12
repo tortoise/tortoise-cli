@@ -1,3 +1,1 @@
-import importlib.metadata as importlib_metadata
-
-__version__ = importlib_metadata.version("tortoise-cli")
+__version__ = "0.2.0"

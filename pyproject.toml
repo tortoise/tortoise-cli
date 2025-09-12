@@ -1,12 +1,11 @@
 [project]
 name = "tortoise-cli"
-version = "0.2.0"
+dynamic = ["version"]
 description = "A cli tool for tortoise-orm, build on top of click and ptpython."
 authors = [{name="long2ice", email="long2ice@gmail.com"}]
 license = "Apache-2.0"
 readme = "README.md"
 keywords = ["tortoise", "shell", "cli", "tortoise-orm"]
-include = ["CHANGELOG.md", "LICENSE", "README.md"]
 requires-python = ">=3.9"
 dependencies = [
     "tortoise-orm",
@@ -21,25 +20,35 @@ repository = "https://github.com/tortoise/tortoise-cli.git"
 documentation = "https://github.com/tortoise/tortoise-cli"
 
 [tool.poetry]
+version = "0.0.0"
 packages = [
     { include = "tortoise_cli"}
 ]
 
-[tool.poetry.group.test.dependencies]
-pytest = "^8.4.0"
-pytest-xdist = "^3.7.0"
-pytest-sugar = "^1.0.0"
-pytest-cov = "^6.2.1"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.11.13"
-mypy = "^1.16.0"
-twine = "^6.1.0"
-bandit = "^1.8.3"
+[dependency-groups]
+test = [
+    "pytest >=8.4.0",
+    "pytest-xdist >=3.7.0",
+    "pytest-sugar >=1.0.0",
+    "pytest-cov >=6.2.1",
+]
+dev = [
+    "ruff >=0.11.13",
+    "bandit >=1.8.3",
+    "mypy >=1.17.1",
+    "twine >=6.1.0",
+]
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+version = {source="file", path="tortoise_cli/__init__.py"}
+
+[tool.pdm.build]
+excludes = ["./**/.git", "./**/.*_cache", "images"]
+include = ["CHANGELOG.md", "LICENSE", "README.md"]
 
 [project.scripts]
 tortoise-cli = "tortoise_cli.cli:main"

@@ -4,6 +4,7 @@
 
 ### 0.2.0
 
+- feat: migrate from poetry to uv (#11)
 - ci: activate ci workflow and add test for utils (#8)
 - feat: generate schemas optionally ([#7])
 - Use `asyncclick` instead of `click` ([#6])
@@ -11,6 +12,7 @@
 - Migrate lint tool from isort+black to ruff ([#5])
 - Drop support for Python3.8 ([#4])
 
+[#11]: https://github.com/tortoise/tortoise-cli/pull/11
 [#8]: https://github.com/tortoise/tortoise-cli/pull/8
 [#7]: https://github.com/tortoise/tortoise-cli/pull/7
 [#6]: https://github.com/tortoise/tortoise-cli/pull/6
