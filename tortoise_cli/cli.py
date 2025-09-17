@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import platform
 import sys
 from collections.abc import AsyncGenerator
 
@@ -9,6 +10,22 @@ from ptpython.repl import embed
 from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
+
+
+def _patch_loop_factory_for_ptpython() -> None:
+    # This patch can be removed when [ptpython#258](https://github.com/prompt-toolkit/ptpython/issues?q=is%3Aissue%20state%3Aopen%20windows) fixed
+    from asyncio import get_event_loop_policy
+
+    def do_nothing(*args, **kw) -> None: ...
+
+    policy = get_event_loop_policy()
+    if loop_factory := getattr(policy, "_loop_factory", None):
+        for attr in ("add_signal_handler", "remove_signal_handler"):
+            setattr(loop_factory, attr, do_nothing)
+
+
+if platform.system() == "Windows":
+    _patch_loop_factory_for_ptpython()
 
 
 @contextlib.asynccontextmanager
