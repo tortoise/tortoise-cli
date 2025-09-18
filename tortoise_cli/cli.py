@@ -13,7 +13,7 @@ from tortoise_cli import __version__, utils
 
 
 def _patch_loop_factory_for_ptpython() -> None:
-    # This patch can be removed when [ptpython#258](https://github.com/prompt-toolkit/ptpython/issues?q=is%3Aissue%20state%3Aopen%20windows) fixed
+    # This patch can be removed when [prompt-toolkit/ptpython#582](https://github.com/prompt-toolkit/ptpython/issues/582) fixed
     from asyncio import get_event_loop_policy
 
     def do_nothing(*args, **kw) -> None: ...
