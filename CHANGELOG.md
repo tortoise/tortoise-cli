@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 0.3
+
+### 0.3.0
+
+- Drop support for Python3.9
+
 ## 0.2
 
 ### 0.2.0
