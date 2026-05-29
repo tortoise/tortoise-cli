@@ -6,7 +6,7 @@ authors = [{name="long2ice", email="long2ice@gmail.com"}]
 license = "Apache-2.0"
 readme = "README.md"
 keywords = ["tortoise", "shell", "cli", "tortoise-orm"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "tortoise-orm",
     "ptpython",
@@ -34,7 +34,7 @@ test = [
 ]
 dev = [
     "ruff >=0.11.13",
-    "bandit >=1.8.3",
+    "bandit >=1.9.4",
     "mypy >=1.17.1",
     "twine >=6.1.0",
 ]
@@ -43,8 +43,8 @@ dev = [
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[tool.pdm]
-version = {source="file", path="tortoise_cli/__init__.py"}
+[tool.pdm.version]
+path = "tortoise_cli/__init__.py"
 
 [tool.pdm.build]
 excludes = ["./**/.git", "./**/.*_cache", "images"]
