@@ -2,10 +2,13 @@ name: ci
 on: [ push, pull_request ]
 jobs:
   ci:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.tortoise-orm-version }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", 3.11, 3.12, 3.13, 3.14]
+        tortoise-orm-version: ["tortoise-orm<1", "tortoise-orm>=1"]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -15,5 +18,9 @@ jobs:
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
+      - name: Resolve Tortoise ORM version
+        run: uv lock -P "${{ matrix.tortoise-orm-version }}"
       - name: Run CI
-        run: uv run make ci
+        run: uv run --frozen make ci
+        env:
+          UV_FROZEN: "1"

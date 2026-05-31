@@ -4,7 +4,7 @@
 [![image](https://img.shields.io/github/license/tortoise/tortoise-cli)](https://github.com/tortoise/tortoise-cli)
 [![image](https://github.com/tortoise/tortoise-cli/workflows/ci/badge.svg)](https://github.com/tortoise/tortoise-cli/actions?query=workflow:ci)
 
-A cli tool for tortoise-orm, build on top of asyncclick and ptpython.
+A cli tool for tortoise-orm, build on top of asyncclick with IPython or ptpython shells.
 
 ## Installation
 
@@ -12,6 +12,12 @@ You can just install from pypi.
 
 ```shell
 pip install tortoise-cli
+```
+
+Install the IPython extra for the preferred interactive shell.
+
+```shell
+pip install "tortoise-cli[ipython]"
 ```
 
 ## Quick Start
@@ -53,6 +59,7 @@ TORTOISE_ORM = {
 ![image](https://raw.githubusercontent.com/tortoise/tortoise-cli/main/images/shell.png)
 
 Then you can start an interactive shell for TortoiseORM.
+It uses IPython when available, and falls back to ptpython.
 
 ```shell
 tortoise-cli -c settings.TORTOISE_ORM shell

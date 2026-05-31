@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import contextlib
+import importlib
+import importlib.util
 import platform
 import sys
 from collections.abc import AsyncGenerator
 
 import asyncclick as click
-from ptpython.repl import embed
 from tortoise import Tortoise, connections
 
 from tortoise_cli import __version__, utils
@@ -24,8 +25,42 @@ def _patch_loop_factory_for_ptpython() -> None:
             setattr(loop_factory, attr, do_nothing)
 
 
-if platform.system() == "Windows":
-    _patch_loop_factory_for_ptpython()
+def _has_module(name: str) -> bool:
+    return importlib.util.find_spec(name) is not None
+
+
+async def _embed_ipython(namespace: dict[str, object]) -> None:
+    embed = getattr(importlib.import_module("IPython"), "embed")
+    embed(
+        header="Tortoise Shell",
+        user_ns=namespace,
+    )
+
+
+async def _embed_ptpython(namespace: dict[str, object]) -> None:
+    if platform.system() == "Windows":
+        _patch_loop_factory_for_ptpython()
+    embed = getattr(importlib.import_module("ptpython.repl"), "embed")
+    await embed(
+        globals=namespace,
+        title="Tortoise Shell",
+        vi_mode=True,
+        return_asyncio_coroutine=True,
+        patch_stdout=True,
+    )
+
+
+async def _embed_interactive_shell(namespace: dict[str, object]) -> None:
+    if _has_module("IPython"):
+        await _embed_ipython(namespace)
+        return
+    if _has_module("ptpython"):
+        await _embed_ptpython(namespace)
+        return
+    raise click.ClickException(
+        "No interactive shell backend installed. "
+        "Install tortoise-cli[ipython] or tortoise-cli[ptpython]."
+    )
 
 
 @contextlib.asynccontextmanager
@@ -71,13 +106,7 @@ async def cli(ctx: click.Context, config: str | None, generate_schemas: bool | N
 async def shell(ctx: click.Context) -> None:
     async with aclose_tortoise():
         with contextlib.suppress(EOFError, ValueError):
-            await embed(
-                globals=globals(),
-                title="Tortoise Shell",
-                vi_mode=True,
-                return_asyncio_coroutine=True,
-                patch_stdout=True,
-            )
+            await _embed_interactive_shell(globals())
 
 
 def main() -> None:

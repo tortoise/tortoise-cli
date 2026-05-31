@@ -1,7 +1,7 @@
 [project]
 name = "tortoise-cli"
 dynamic = ["version"]
-description = "A cli tool for tortoise-orm, build on top of click and ptpython."
+description = "A cli tool for tortoise-orm, build on top of asyncclick and ipython/ptpython."
 authors = [{name="long2ice", email="long2ice@gmail.com"}]
 license = "Apache-2.0"
 readme = "README.md"
@@ -9,9 +9,16 @@ keywords = ["tortoise", "shell", "cli", "tortoise-orm"]
 requires-python = ">=3.10"
 dependencies = [
     "tortoise-orm",
-    "ptpython",
     "asyncclick (>=8.1.7,<9.0.0)",
     "tomlkit (>=0.11.4,<1.0.0); python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+ipython = [
+    "ipython",
+]
+ptpython = [
+    "ptpython>=3.0.0",
 ]
 
 [project.urls]
